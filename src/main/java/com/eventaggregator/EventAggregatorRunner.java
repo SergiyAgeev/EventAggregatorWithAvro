@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+
 public class EventAggregatorRunner {
     private static final Logger LOG = LoggerFactory.getLogger(EventAggregatorRunner.class);
     private static final File FOLDER = new File("src/main/resources");
@@ -82,14 +84,8 @@ public class EventAggregatorRunner {
 
     //GOOD
     private static Map<String, List<EventRecord>> sortByCity(List<EventRecord> eventRecords) {
-        Map<String, List<EventRecord>> map = new HashMap<>();
-        eventRecords.forEach(singleRecord -> {
-            if (!map.containsKey(singleRecord.city)) {
-                map.put(String.valueOf(singleRecord.city), new ArrayList<>());
-            }
-            map.get(singleRecord.city).add(singleRecord);
-        });
-        return map;
+        return eventRecords.stream()
+                .collect(groupingBy(eventRecord -> eventRecord.get(2).toString()));
     }
 
     //IN PROGRESS
