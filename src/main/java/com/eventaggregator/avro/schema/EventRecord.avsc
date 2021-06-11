@@ -1,0 +1,35 @@
+{
+  "type" : "record",
+  "name" : "EventRecord",
+  "namespace" : "com.eventaggregator.model.EventRecord",
+  "fields" : [ {
+    "name" : "id",
+    "type" : "long"
+  }, {
+    "name" : "userId",
+    "type" : "long"
+  }, {
+    "name" : "city",
+    "type" : "string"
+  }, {
+    "name" : "eventType",
+    "type" : "string"
+  }, {
+    "name": "timestamp",
+    "type": "string"
+  }, {
+    "name" : "eventSubject",
+    "type" : {
+      "type" : "record",
+      "name" : "EventSubject",
+      "namespace" : "com.eventaggregator.model.EventRecord",
+      "fields" : [ {
+        "name" : "id",
+        "type" : "long"
+      }, {
+        "name" : "subjectType",
+        "type" : "string"
+      } ]
+    }
+  } ]
+}

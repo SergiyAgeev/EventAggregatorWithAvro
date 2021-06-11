@@ -1,0 +1,1 @@
+{"id" : 1,  "userId": 1,  "city" :  "Lviv",  "eventType": "click",  "timestamp" : "01-06-2020 02:30:00", "eventSubject" : {"id" : 1, "subjectType" : "some article 1"} }

@@ -1,0 +1,34 @@
+{
+  "type" : "record",
+  "name" : "Subjects",
+  "namespace" : "com.eventaggregator.model.Subjects",
+  "fields" : [ {
+    "name" : "id",
+    "type" : "int"
+  }, {
+    "name" : "type",
+    "type" : "string"
+  }, {
+    "name" : "activities",
+    "type" : {
+      "type" : "record",
+      "name" : "Activities",
+      "fields" : [ {
+        "name" : "type",
+        "type" : "string"
+      }, {
+        "name" : "past7daysCount",
+        "type" : "int"
+      }, {
+        "name" : "past7daysUniqueCount",
+        "type" : "int"
+      }, {
+        "name" : "past30daysCount",
+        "type" : "int"
+      }, {
+        "name" : "past30daysUniqueCount",
+        "type" : "int"
+      } ]
+    }
+  } ]
+}
