@@ -27,8 +27,7 @@ public class EventAggregatorRunner {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     public static void main(String[] args) throws Exception {
-        List<EventRecord> eventsFromPackage = getEventsFromPackage();
-        calculateDateAndSaveIntoAvroFile(eventsFromPackage);
+        calculateDateAndSaveIntoAvroFile(getEventsFromPackage());
     }
 
     public static List<EventRecord> getEventsFromPackage() throws Exception {
@@ -77,9 +76,8 @@ public class EventAggregatorRunner {
             Map.Entry<String, Map<Long, List<EventRecord>>> next = entryIterator.next();
             String city = next.getKey();
             Map<Long, List<EventRecord>> value = next.getValue();
-            Set<Long> keySet = value.keySet();
             Set<Activity> activitySet = new HashSet<>();
-            for (var key : keySet) {
+            for (var key : value.keySet()) {
                 List<EventRecord> eventRecords1 = value.get(key);
                 for (EventRecord record : eventRecords1) {
                     Activity activity = new Activity();
