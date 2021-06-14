@@ -1,1 +1,1 @@
-{"id" : 2,  "userId": 2,  "city" :  "Kyiv",  "eventType": "click",  "timestamp" : "15-05-2020 02:30:00", "eventSubject" : {"id" : 2, "subjectType" : "some article 2"  } }
+{"id" : 2,  "userId": 2,  "city" :  "Kyiv",  "eventType": "click",  "timestamp" : "15-05-2020 02:30:00", "eventSubject" : {"id" : 2, "subjectType" : "article"  } }
