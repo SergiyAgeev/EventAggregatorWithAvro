@@ -58,8 +58,7 @@ public class EventAggregatorRunner {
     private static Map<String, Map<Long, List<EventRecord>>> sortByCityAndType(List<EventRecord> eventRecords) {
         return eventRecords.stream()
                 .collect(groupingBy(eventRecord -> eventRecord.get(2).toString(),
-                        groupingBy(eventRecord -> eventRecord.eventSubject.id))
-                );
+                        groupingBy(eventRecord -> eventRecord.eventSubject.id)));
     }
 
     public static void calculateDateAndSaveIntoAvroFile(List<EventRecord> eventRecords) throws IOException {
@@ -80,6 +79,7 @@ public class EventAggregatorRunner {
             for (var key : value.keySet()) {
                 List<EventRecord> eventRecords1 = value.get(key);
                 for (EventRecord record : eventRecords1) {
+                    LOG.info("Date comparison is started for record: " + record);
                     Activity activity = new Activity();
                     String evType = (String) record.eventType;
                     subject.type = record.eventSubject.subjectType;
@@ -110,9 +110,10 @@ public class EventAggregatorRunner {
                             .findAny()
                             .orElse(null);
                     if (singleActivity == null) {
+                        LOG.info("Activity is not exist, trying to create a new one");
                         activitySet.add(activity);
-
                     } else {
+                        LOG.info("Activity is exist, trying update it");
                         singleActivity.past7daysCount += tempPast7daysCount;
                         singleActivity.past7daysUniqueCount += tempPast7daysUniqueCount;
                         singleActivity.past30daysCount += tempPast30daysCount;
@@ -127,7 +128,7 @@ public class EventAggregatorRunner {
 
             final DataFileWriter<Subjects> writer = new DataFileWriter<>(new SpecificDatumWriter<>(Subjects.class));
             File tmpFile = File.createTempFile(city, ".avro");
-            LOG.info("trying to save AVRO file with name: " + tmpFile.getName() + ", in package: " +tmpFile.getPath());
+            LOG.info("trying to save AVRO file with name: " + tmpFile.getName() + ", in package: " + tmpFile.getPath());
             writer.create(Subjects.SCHEMA$, tmpFile);
             subject.activities = new ArrayList<>(activitySet);
             writer.append(subject);
