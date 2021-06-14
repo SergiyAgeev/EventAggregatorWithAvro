@@ -7,7 +7,7 @@
     "type" : "long"
   }, {
     "name" : "userId",
-    "type" : "long"
+    "type" : ["long", "null"]
   }, {
     "name" : "city",
     "type" : "string"

@@ -1,6 +1,7 @@
 package com.eventaggregator;
 
 import com.eventaggregator.model.EventRecord.EventRecord;
+import com.eventaggregator.model.Subjects.Activity;
 import com.eventaggregator.model.Subjects.Subjects;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.specific.SpecificDatumWriter;
@@ -10,14 +11,14 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.security.auth.Subject;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class EventAggregatorRunner {
     private static final Logger LOG = LoggerFactory.getLogger(EventAggregatorRunner.class);
@@ -26,12 +27,7 @@ public class EventAggregatorRunner {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     public static void main(String[] args) throws Exception {
-        List<EventRecord> eventsFromPackage = getEventsFromPackage();
-//        writeToFile(eventsFromPackage);
-        Map<String, List<EventRecord>> map = sortByCity(eventsFromPackage);
-        List<Subjects> subjects = parseTimestamp(map);
-        System.out.println(map);
-
+        calculateDateAndSaveIntoAvroFile(getEventsFromPackage());
     }
 
     public static List<EventRecord> getEventsFromPackage() throws Exception {
@@ -59,72 +55,85 @@ public class EventAggregatorRunner {
         return event;
     }
 
-    ///NOK
-    public static void writeToFile(List<Subjects> subjectsList) throws IOException {
-        final DataFileWriter<Subjects> writer = new DataFileWriter<>(new SpecificDatumWriter<>(Subjects.class));
-        LOG.info("events count: " + subjectsList.size());
-        File tmpFile = File.createTempFile("events", ".avro");
-        writer.create(EventRecord.SCHEMA$, tmpFile);
-        for (Subjects singleSubject : subjectsList) {
-            LOG.info("writing event: " + singleSubject.toString());
-            writer.append(singleSubject);
-        }
-        writer.close();
-        LOG.info("DONE!, file was wrote with name " + tmpFile.getName());
+    private static Map<String, Map<Long, List<EventRecord>>> sortByCityAndType(List<EventRecord> eventRecords) {
+        return eventRecords.stream()
+                .collect(groupingBy(eventRecord -> eventRecord.get(2).toString(),
+                        groupingBy(eventRecord -> eventRecord.eventSubject.id))
+                );
     }
 
-    private static List<Subjects> EventsToSubjectsConvert(List<EventRecord> eventRecords) {
-        Map<String, String> someMap = new HashMap();
-        eventRecords.stream().map(er -> er.city).collect(Collectors.toSet());
-
-        return null;
-    }
-
-    //GOOD
-    private static Map<String, List<EventRecord>> sortByCity(List<EventRecord> eventRecords) {
-        Map<String, List<EventRecord>> map = new HashMap<>();
-        eventRecords.forEach(singleRecord -> {
-            if (!map.containsKey(singleRecord.city)) {
-                map.put(String.valueOf(singleRecord.city), new ArrayList<>());
-            }
-            map.get(singleRecord.city).add(singleRecord);
-        });
-        return map;
-    }
-
-    //IN PROGRESS
-    private static List<Subjects> parseTimestamp(Map<String, List<EventRecord>> map) throws Exception {
-        Set<String> keys = new HashSet<>();
-        if (!map.isEmpty()) {
-            keys = map.keySet();
-        } else {
-            throw new Exception("Map is empty!!");
-        }
-        for (String singleKey : keys) {
-            int tempPast7daysCount = 0;
-            int tempPast7daysUniqueCount = 0;
-            int tempPast30daysCount = 0;
-            int tempPast30daysUniqueCount = 0;
-
-            List<EventRecord> eventRecords = map.get(singleKey);
-            for (EventRecord singleEventRecord : eventRecords) {
-                if (singleEventRecord.userId != 0) {
-                    LocalDate dateTime = LocalDate.parse(singleEventRecord.timestamp.toString(), FORMATTER);
-//                    LocalDate dateTime = LocalDate.parse(singleEventRecord.timestamp.toString());
-                    if (dateTime.plusDays(30).isBefore(LocalDate.now())){
-                        tempPast30daysCount++;
-                        if (dateTime.plusDays(7).isBefore(LocalDate.now())){
+    public static void calculateDateAndSaveIntoAvroFile(List<EventRecord> eventRecords) throws IOException {
+        Iterator<Map.Entry<String, Map<Long, List<EventRecord>>>> entryIterator = sortByCityAndType(eventRecords)
+                .entrySet()
+                .iterator();
+        int tempPast7daysCount = 0;
+        int tempPast7daysUniqueCount = 0;
+        int tempPast30daysCount = 0;
+        int tempPast30daysUniqueCount = 0;
+        while (entryIterator.hasNext()) {
+            Subjects subject = new Subjects();
+            subject.activities = new ArrayList<>();
+            Map.Entry<String, Map<Long, List<EventRecord>>> next = entryIterator.next();
+            String city = next.getKey();
+            Map<Long, List<EventRecord>> value = next.getValue();
+            Set<Activity> activitySet = new HashSet<>();
+            for (var key : value.keySet()) {
+                List<EventRecord> eventRecords1 = value.get(key);
+                for (EventRecord record : eventRecords1) {
+                    Activity activity = new Activity();
+                    String evType = (String) record.eventType;
+                    subject.type = record.eventSubject.subjectType;
+                    subject.id = (int) record.eventSubject.id;
+                    LocalDate dateForCheck = LocalDate.parse(record.timestamp.toString(), FORMATTER);
+                    if (record.userId != null) {
+                        if (dateForCheck.plusDays(30).isBefore(LocalDate.now())) {
+                            tempPast30daysCount++;
+                        }
+                        if (dateForCheck.plusDays(7).isBefore(LocalDate.now())) {
                             tempPast7daysCount++;
                         }
+                    } else {
+                        if (dateForCheck.plusDays(30).isBefore(LocalDate.now())) {
+                            tempPast30daysUniqueCount++;
+                        }
+                        if (dateForCheck.plusDays(7).isBefore(LocalDate.now())) {
+                            tempPast7daysUniqueCount++;
+                        }
                     }
+                    activity.type = evType;
+                    activity.past7daysCount = tempPast7daysCount;
+                    activity.past30daysCount = tempPast30daysCount;
+                    activity.past7daysUniqueCount = tempPast7daysUniqueCount;
+                    activity.past30daysUniqueCount = tempPast30daysUniqueCount;
+                    Activity singleActivity = activitySet.stream()
+                            .filter(s -> evType.contentEquals(s.type))
+                            .findAny()
+                            .orElse(null);
+                    if (singleActivity == null) {
+                        activitySet.add(activity);
 
+                    } else {
+                        singleActivity.past7daysCount += tempPast7daysCount;
+                        singleActivity.past7daysUniqueCount += tempPast7daysUniqueCount;
+                        singleActivity.past30daysCount += tempPast30daysCount;
+                        singleActivity.past30daysUniqueCount += tempPast30daysUniqueCount;
+                    }
+                    tempPast7daysCount = 0;
+                    tempPast7daysUniqueCount = 0;
+                    tempPast30daysCount = 0;
+                    tempPast30daysUniqueCount = 0;
                 }
-
             }
 
+            final DataFileWriter<Subjects> writer = new DataFileWriter<>(new SpecificDatumWriter<>(Subjects.class));
+            File tmpFile = File.createTempFile(city, ".avro");
+            LOG.info("trying to save AVRO file with name: " + tmpFile.getName() + ", in package: " +tmpFile.getPath());
+            writer.create(Subjects.SCHEMA$, tmpFile);
+            subject.activities = new ArrayList<>(activitySet);
+            writer.append(subject);
+            writer.close();
+            LOG.info("DONE! AVRO file was created for subject: " + subject);
         }
-
-        return null;
     }
 
 }

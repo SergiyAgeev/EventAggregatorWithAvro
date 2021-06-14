@@ -9,26 +9,31 @@
     "name" : "type",
     "type" : "string"
   }, {
-    "name" : "activities",
-    "type" : {
-      "type" : "record",
-      "name" : "Activities",
-      "fields" : [ {
-        "name" : "type",
-        "type" : "string"
-      }, {
-        "name" : "past7daysCount",
-        "type" : "int"
-      }, {
-        "name" : "past7daysUniqueCount",
-        "type" : "int"
-      }, {
-        "name" : "past30daysCount",
-        "type" : "int"
-      }, {
-        "name" : "past30daysUniqueCount",
-        "type" : "int"
-      } ]
-    }
-  } ]
-}
+   "name" : "activities",
+       "type" : {
+         "type" : "array",
+         "items" : {
+           "type" : "record",
+           "name" : "Activity",
+           "namespace" : "com.eventaggregator.model.Subjects",
+           "fields" : [ {
+             "name" : "type",
+             "type" : "string"
+           }, {
+             "name" : "past7daysCount",
+             "type" : "int"
+           }, {
+             "name" : "past7daysUniqueCount",
+             "type" : "int"
+           }, {
+             "name" : "past30daysCount",
+             "type" : "int"
+           }, {
+             "name" : "past30daysUniqueCount",
+             "type" : "int"
+           } ]
+         },
+         "java-class" : "java.util.List"
+       }
+     } ]
+   }
