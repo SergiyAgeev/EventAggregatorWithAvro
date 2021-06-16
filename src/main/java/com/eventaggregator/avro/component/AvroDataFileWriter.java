@@ -20,7 +20,7 @@ public class AvroDataFileWriter {
     public void toFileWriter(Subjects subject, String city, Set<Activity> activitySet) {
         try (DataFileWriter<Subjects> writer = new DataFileWriter<>(new SpecificDatumWriter<>(Subjects.class))) {
             File file = new File(
-                    "src/main/java/com/eventaggregator/avro/out/"
+                    "src/main/java/com/eventaggregator/out/"
                             + city + " " + LocalDate.now() + " " + new Random().nextInt() + ".avro");
             LOG.info("trying to save AVRO file with name: " + file.getName() + ", in package: " + file.getPath());
             writer.create(Subjects.SCHEMA$, file);

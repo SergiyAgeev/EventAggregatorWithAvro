@@ -17,16 +17,20 @@ import java.util.Objects;
 
 public class JsonPackageReader {
     private static final Logger LOG = LoggerFactory.getLogger(EventAggregatorRunner.class);
-    private static final File FOLDER = new File("src/main/java/com/eventaggregator/avro/in/");
+    private static final File FOLDER = new File("src/main/java/com/eventaggregator/in/");
     private static final List<File> LIST_OF_FILES = List.of(Objects.requireNonNull(FOLDER.listFiles()));
 
-    public static List<EventRecord> getEventsFromPackage() throws Exception {
+    public static List<EventRecord> getEventsFromPackage() {
         LOG.info(String.format("number of files in package is %d", LIST_OF_FILES.size()));
         List<EventRecord> events = new ArrayList<>();
         for (File file : LIST_OF_FILES) {
             if (file.isFile()) {
                 LOG.info("process started for file with name: " + file.getName());
-                events.add(parseJsonObject(readJsonPackage(file.getPath())));
+                try {
+                    events.add(parseJsonObject(readJsonPackage(file.getPath())));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return events;
