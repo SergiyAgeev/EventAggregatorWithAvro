@@ -1,7 +1,7 @@
 package com.eventaggregator.avro.component;
 
+import avrogeneratedmodel.EventRecord;
 import com.eventaggregator.EventAggregatorRunner;
-import com.eventaggregator.model.EventRecord.EventRecord;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

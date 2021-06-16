@@ -1,9 +1,10 @@
 package com.eventaggregator.avro.component;
 
+
+import avrogeneratedmodel.Activity;
+import avrogeneratedmodel.EventRecord;
+import avrogeneratedmodel.Subjects;
 import com.eventaggregator.EventAggregatorRunner;
-import com.eventaggregator.model.EventRecord.EventRecord;
-import com.eventaggregator.model.Subjects.Activity;
-import com.eventaggregator.model.Subjects.Subjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

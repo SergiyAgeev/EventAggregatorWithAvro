@@ -1,7 +1,7 @@
 {
   "type" : "record",
   "name" : "Subjects",
-  "namespace" : "com.eventaggregator.model.Subjects",
+  "namespace" : "avrogeneratedmodel",
   "fields" : [ {
     "name" : "id",
     "type" : "int"
@@ -15,7 +15,7 @@
          "items" : {
            "type" : "record",
            "name" : "Activity",
-           "namespace" : "com.eventaggregator.model.Subjects",
+           "namespace" : "avrogeneratedmodel",
            "fields" : [ {
              "name" : "type",
              "type" : "string"

@@ -1,7 +1,7 @@
 {
   "type" : "record",
   "name" : "EventRecord",
-  "namespace" : "com.eventaggregator.model.EventRecord",
+  "namespace" : "avrogeneratedmodel",
   "fields" : [ {
     "name" : "id",
     "type" : "long"
@@ -22,7 +22,7 @@
     "type" : {
       "type" : "record",
       "name" : "EventSubject",
-      "namespace" : "com.eventaggregator.model.EventRecord",
+      "namespace" : "avrogeneratedmodel",
       "fields" : [ {
         "name" : "id",
         "type" : "long"
