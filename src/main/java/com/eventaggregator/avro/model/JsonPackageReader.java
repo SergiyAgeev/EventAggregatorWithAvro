@@ -1,4 +1,4 @@
-package com.eventaggregator.avro.component;
+package com.eventaggregator.avro.model;
 
 import avrogeneratedmodel.EventRecord;
 import com.eventaggregator.EventAggregatorRunner;

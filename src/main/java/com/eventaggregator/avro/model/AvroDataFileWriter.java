@@ -1,4 +1,4 @@
-package com.eventaggregator.avro.component;
+package com.eventaggregator.avro.model;
 
 import avrogeneratedmodel.Activity;
 import avrogeneratedmodel.Subjects;

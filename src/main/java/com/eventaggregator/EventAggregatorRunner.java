@@ -1,9 +1,8 @@
 package com.eventaggregator;
 
-import com.eventaggregator.avro.component.AvroDataFileWriter;
-import com.eventaggregator.avro.component.JsonPackageReader;
-import com.eventaggregator.avro.component.StatisticCalculator;
-
+import com.eventaggregator.avro.model.AvroDataFileWriter;
+import com.eventaggregator.avro.model.JsonPackageReader;
+import com.eventaggregator.avro.model.StatisticCalculator;
 
 public class EventAggregatorRunner {
     public static void main(String[] args) {
