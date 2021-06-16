@@ -12,6 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <avro.version>1.5.3</avro.version>
+        <beam.version>2.30.0</beam.version>
     </properties>
     <build>
         <plugins>
@@ -98,6 +99,7 @@
             <artifactId>avro-compiler</artifactId>
             <version>${avro.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
@@ -105,6 +107,33 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--APACHE BEAM-->
+        <dependency>
+            <groupId>org.apache.beam</groupId>
+            <artifactId>beam-sdks-java-core</artifactId>
+            <version>${beam.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.beam</groupId>
+            <artifactId>beam-runners-direct-java</artifactId>
+            <version>${beam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.beam</groupId>
+            <artifactId>beam-runners-google-cloud-dataflow-java</artifactId>
+            <version>${beam.version}</version>
+        </dependency>
+
+
+
 
     </dependencies>
 
