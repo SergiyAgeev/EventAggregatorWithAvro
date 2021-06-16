@@ -1,7 +1,7 @@
 package com.eventaggregator.avro.component;
 
-import com.eventaggregator.model.Subjects.Activity;
-import com.eventaggregator.model.Subjects.Subjects;
+import avrogeneratedmodel.Activity;
+import avrogeneratedmodel.Subjects;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.slf4j.Logger;
