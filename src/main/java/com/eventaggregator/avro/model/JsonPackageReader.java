@@ -25,7 +25,7 @@ public class JsonPackageReader {
         List<EventRecord> events = new ArrayList<>();
         for (File file : LIST_OF_FILES) {
             if (file.isFile()) {
-                LOG.info("process started for file with name: " + file.getName());
+                LOG.info(String.format("process started for file with name: %s", file.getName()));
                 try {
                     events.add(parseJsonObject(readJsonPackage(file.getPath())));
                 } catch (Exception e) {
@@ -45,7 +45,7 @@ public class JsonPackageReader {
     private static EventRecord parseJsonObject(JSONObject jsonObject) throws IOException {
         LOG.info("json to avro parse is started");
         EventRecord event = new ObjectMapper().readValue(jsonObject.toString(), EventRecord.class);
-        LOG.info("event parse finished for event: " + event);
+        LOG.info(String.format("event parse finished for event: %s", event));
         return event;
     }
 }

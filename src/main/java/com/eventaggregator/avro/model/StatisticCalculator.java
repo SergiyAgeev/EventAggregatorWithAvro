@@ -41,7 +41,7 @@ public class StatisticCalculator {
             for (var key : value.keySet()) {
                 List<EventRecord> eventRecords1 = value.get(key);
                 for (EventRecord record : eventRecords1) {
-                    LOG.info("Date comparison is started for record: " + record);
+                    LOG.info(String.format("Date comparison is started for record: %s", record));
                     Activity activity = new Activity();
                     String evType = (String) record.eventType;
                     subject.type = record.eventSubject.subjectType;
