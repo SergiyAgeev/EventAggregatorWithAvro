@@ -8,6 +8,7 @@ import com.eventaggregator.beam.model.BeamStatisticCalculator;
 import com.eventaggregator.beam.model.EventRecord;
 import com.eventaggregator.beam.model.EventStatistic;
 import com.eventaggregator.beam.model.JsonParser;
+import org.apache.beam.runners.dataflow.DataflowRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.coders.KvCoder;
 import org.apache.beam.sdk.coders.SerializableCoder;
@@ -26,12 +27,18 @@ import org.apache.beam.sdk.values.KV;
 
 public class EventAggregatorRunner {
     public static void main(String[] args) {
+        EventAggregatorOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
+                .as(EventAggregatorOptions.class);
+        options.setJobName("event-aggregator");
+        options.setInputFile("gs://job_input");
+        options.setOutput("gs://job_output_avro");
+        options.setRunner(DataflowRunner.class);
 
 //avro local file generate runner
 //        runLocalAvro();
 
 //beam pipeline runner
-        runBeamPipeline(PipelineOptionsFactory.fromArgs(args).withValidation().as(EventAggregatorOptions.class));
+        runBeamPipeline(options);
 
     }
 
