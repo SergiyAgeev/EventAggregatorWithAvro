@@ -11,7 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <avro.version>1.5.3</avro.version>
+        <avro.version>1.8.2</avro.version>
         <beam.version>2.30.0</beam.version>
     </properties>
     <build>
@@ -83,6 +83,7 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.30</version>
         </dependency>
+
         <!--AVRO-->
         <dependency>
             <groupId>org.apache.avro</groupId>
@@ -124,14 +125,18 @@
             <groupId>org.apache.beam</groupId>
             <artifactId>beam-runners-direct-java</artifactId>
             <version>${beam.version}</version>
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.beam</groupId>
             <artifactId>beam-runners-google-cloud-dataflow-java</artifactId>
             <version>${beam.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.beam</groupId>
+            <artifactId>beam-sdks-java-extensions-json-jackson</artifactId>
+            <version>${beam.version}</version>
+        </dependency>
 
 
 

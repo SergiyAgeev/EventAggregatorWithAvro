@@ -7,14 +7,13 @@ import org.apache.beam.sdk.options.Validation;
 
 public interface EventAggregatorOptions extends PipelineOptions {
     @Description("Path of the package to read from")
-    @Default.String("src/main/java/com/eventaggregator/in")
+    @Default.String("src/main/java/com/eventaggregator/in/*.json")
     String getInputFile();
 
     void setInputFile(String value);
 
     @Description("Path of the package to write to")
     @Default.String("src/main/java/com/eventaggregator/out")
-    @Validation.Required
     String getOutput();
 
     void setOutput(String value);

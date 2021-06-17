@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Builder
 public class EventRecord implements Serializable {
     private long id;
-    private long userId;
+    private Long userId;
     private String city;
     private String eventType;
     private String timestamp;
