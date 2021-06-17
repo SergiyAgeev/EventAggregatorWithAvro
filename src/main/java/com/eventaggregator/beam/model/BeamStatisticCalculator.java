@@ -18,7 +18,6 @@ public class BeamStatisticCalculator extends DoFn<KV<String, Iterable<EventRecor
     private static final Logger LOG = LoggerFactory.getLogger(BeamStatisticCalculator.class);
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-
     @ProcessElement
     public void processElement(@Element KV<String, Iterable<EventRecord>> cityEvent,
                                OutputReceiver<KV<String, EventStatistic>> receiver) {
