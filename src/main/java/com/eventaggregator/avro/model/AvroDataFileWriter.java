@@ -1,4 +1,4 @@
-package com.eventaggregator.avro.component;
+package com.eventaggregator.avro.model;
 
 import avrogeneratedmodel.Activity;
 import avrogeneratedmodel.Subjects;
@@ -20,16 +20,17 @@ public class AvroDataFileWriter {
     public void toFileWriter(Subjects subject, String city, Set<Activity> activitySet) {
         try (DataFileWriter<Subjects> writer = new DataFileWriter<>(new SpecificDatumWriter<>(Subjects.class))) {
             File file = new File(
-                    "src/main/java/com/eventaggregator/avro/out/"
-                            + city + " " + LocalDate.now() + " " + new Random().nextInt() + ".avro");
-            LOG.info("trying to save AVRO file with name: " + file.getName() + ", in package: " + file.getPath());
+                    String.format("src/main/java/com/eventaggregator/out/%s %s %d.avro", city, LocalDate.now(),
+                            new Random().nextInt()));
+            LOG.info(String.format("trying to save AVRO file with name: %s, in package: %s", file.getName(),
+                    file.getPath()));
             writer.create(Subjects.SCHEMA$, file);
             subject.activities = new ArrayList<>(activitySet);
             writer.append(subject);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LOG.info("DONE! AVRO file was created for subject: " + subject);
+        LOG.info(String.format("DONE! AVRO file was created for subject: %s", subject));
     }
 
 }

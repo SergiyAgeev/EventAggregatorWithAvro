@@ -1,4 +1,4 @@
-package com.eventaggregator.avro.component;
+package com.eventaggregator.avro.model;
 
 
 import avrogeneratedmodel.Activity;
@@ -10,7 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -36,7 +41,7 @@ public class StatisticCalculator {
             for (var key : value.keySet()) {
                 List<EventRecord> eventRecords1 = value.get(key);
                 for (EventRecord record : eventRecords1) {
-                    LOG.info("Date comparison is started for record: " + record);
+                    LOG.info(String.format("Date comparison is started for record: %s", record));
                     Activity activity = new Activity();
                     String evType = (String) record.eventType;
                     subject.type = record.eventSubject.subjectType;
