@@ -22,13 +22,9 @@ import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.transforms.SerializableFunction;
 import org.apache.beam.sdk.transforms.WithKeys;
 import org.apache.beam.sdk.values.KV;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class EventAggregatorRunner {
-    private static final Logger LOG = LoggerFactory.getLogger(BeamStatisticCalculator.class);
-
     public static void main(String[] args) {
 
 //avro local file generate runner
