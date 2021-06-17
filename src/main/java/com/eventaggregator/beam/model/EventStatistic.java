@@ -11,12 +11,7 @@ import java.util.List;
 
 @Data
 @Builder
-@DefaultSchema(JavaBeanSchema.class)
 public class EventStatistic implements Serializable {
     private List<Subject> subjects;
 
-    @SchemaCreate
-    public EventStatistic(List<Subject> subjects) {
-        this.subjects = subjects;
-    }
 }

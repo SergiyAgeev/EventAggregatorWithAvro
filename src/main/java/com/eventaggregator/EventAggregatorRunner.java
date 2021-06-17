@@ -68,4 +68,5 @@ public class EventAggregatorRunner {
     private static FileIO.Write.FileNaming apply(String city) {
         return FileIO.Write.defaultNaming(city, ".avro");
     }
+
 }
